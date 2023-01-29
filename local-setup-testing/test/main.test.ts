@@ -20,6 +20,32 @@ async function deployGreeter(deployer: Deployer): Promise<Contract> {
   }
 }
 
+async function deployToken(deployer: Deployer): Promise<Contract> {
+  try {
+    console.log('Deploying erc20 contract');
+    const artifact = await deployer.loadArtifact('zkToken');
+
+    return await deployer.deploy(artifact);
+  } catch (error) {
+    console.error('Error deploying erc20 contract');
+    console.error(error);
+    throw new Error('Error deploying erc20 contract');
+  }
+}
+
+async function deployNFT(deployer: Deployer): Promise<Contract> {
+  try {
+    console.log('Deploying nft contract');
+    const artifact = await deployer.loadArtifact('zkNFT');
+
+    return await deployer.deploy(artifact);
+  } catch (error) {
+    console.error('Error deploying nft contract');
+    console.error(error);
+    throw new Error('Error deploying nft contract');
+  }
+}
+
 describe('Greeter', function () {
   let deployer: Deployer;
 
@@ -46,3 +72,32 @@ describe('Greeter', function () {
     expect(await greeter.greet()).to.equal('Hola, mundo!');
   });
 });
+
+
+describe('Erc20', function () {
+  let deployer: Deployer;
+
+  before('Fund the wallet', async () => {
+    deployer = new Deployer(hre, new Wallet(RICH_WALLET_PK));
+
+    const depositHandle = await deployer.zkWallet.deposit({
+      to: deployer.zkWallet.address,
+      token: utils.ETH_ADDRESS,
+      amount: ethers.utils.parseEther('0.001'),
+    });
+
+    await depositHandle.wait();
+  });
+
+  it("Should return the new greeting once it's changed", async () => {
+    const greeter = await deployGreeter(deployer);
+    console.log('Contract deployed');
+    expect(await greeter.greet()).to.eq('Hi');
+
+    const setGreetingTx = await greeter.setGreeting('Hola, mundo!');
+    await setGreetingTx.wait();
+
+    expect(await greeter.greet()).to.equal('Hola, mundo!');
+  });
+});
+
