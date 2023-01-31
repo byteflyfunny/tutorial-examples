@@ -22,7 +22,7 @@ const TOKEN_ADDRESS = "0x5fE58d975604E6aF62328d9E505181B94Fc0718C";
 
 
 var fs = require("fs");
-const DESTINATION_WALLET = "0x2b04735C4ED77d75938a205cA5595CE1D5599E40";
+const DESTINATION_WALLET = "0x36615Cf349d7F6344891B1e7CA7C72883F5dc049";
 
 
 if (!TOKEN_ADDRESS) throw "⛔️ ERC20 token address not provided";
@@ -51,8 +51,10 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     var start = Date.now();
     console.log(`start time ${start}`); 
     for (var line of lines){
-        console.log(`Line content is ${line[1]}`)
-        tranfer(line[0])
+        if (line.length > 2) {
+            console.log(`Line content is ${line[1]}`)
+            tranfer(line[0])
+        }
     }
 
     do {
@@ -61,7 +63,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     while (newCounter<counter + lines.length);
     var end = Date.now()
     console.log(`end time ${end}`); 
-    console.log(`total cost ${start-end}`)
+    console.log(`total cost ${end-start}`)
 }
 
 
@@ -70,7 +72,10 @@ export function read_csv_line(csvfile: string): string[]{
     let arr: string[] = csvstr.split('\n');
     let array: any = [];
     arr.forEach(line => {
-      array.push(line.split(','));
+        let elms = line.split(',');
+        if (elms.length >2 ) {
+            array.push(elms);
+        }
     });
     return array
 }
