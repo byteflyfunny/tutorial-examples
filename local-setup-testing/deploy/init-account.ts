@@ -43,16 +43,16 @@ export default async function (hre: HardhatRuntimeEnvironment) {
         const account = new Wallet(line[0],provider)
 
         const AMOUNT = "1000";
-        console.log(
-            `Account ${signer.address} balance is: ${await tokenContract.balanceOf(
-            signer.address
-            )} tokens`
-        );
-        console.log(
-            `Account ${account.address} balance is: ${await tokenContract.balanceOf(
-            account.address
-            )} tokens`
-        );
+        // console.log(
+        //     `Account ${signer.address} balance is: ${await tokenContract.balanceOf(
+        //     signer.address
+        //     )} tokens`
+        // );
+        // console.log(
+        //     `Account ${account.address} balance is: ${await tokenContract.balanceOf(
+        //     account.address
+        //     )} tokens`
+        // );
                 //   transfer tokens
         const transferHandle = await tokenContract.transfer(
             account.address,
@@ -64,16 +64,16 @@ export default async function (hre: HardhatRuntimeEnvironment) {
         await transferHandle.wait();
 
         console.log(`Transfer completed in trx ${transferHandle.hash}`);
-        console.log(
-            `Account ${signer.address} balance now is: ${await tokenContract.balanceOf(
-            signer.address
-            )} tokens`
-        );
-        console.log(
-            `Account ${account.address} balance now is: ${await tokenContract.balanceOf(
-            account.address
-            )} tokens`
-        );
+        // console.log(
+        //     `Account ${signer.address} balance now is: ${await tokenContract.balanceOf(
+        //     signer.address
+        //     )} tokens`
+        // );
+        // console.log(
+        //     `Account ${account.address} balance now is: ${await tokenContract.balanceOf(
+        //     account.address
+        //     )} tokens`
+        // );
 
         const transfer = await signer.transfer({
             to: account.address,
@@ -82,16 +82,15 @@ export default async function (hre: HardhatRuntimeEnvironment) {
         const transferReceipt = await transfer.wait();
         console.log(`Transfer native token eth completed in trx ${transferReceipt.blockHash}`);
 
-        console.log(
-            `Account ${account.address} eth balance now is: ${await signer.getBalance()} tokens`
-        );
+        // console.log(
+        //     `Account ${account.address} eth balance now is: ${await signer.getBalance()} tokens`
+        // );
     }
 }
 
 
 export function read_csv_line(csvfile: string): string[]{
     let csvstr: string = fs.readFileSync(csvfile,"utf8",'r+');
-    console.log(`line is ${csvstr}`)
     let arr: string[] = csvstr.split('\n');
     let array: any = [];
     arr.forEach(line => {

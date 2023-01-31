@@ -22,7 +22,7 @@ const TOKEN_ADDRESS = "0x5fE58d975604E6aF62328d9E505181B94Fc0718C";
 
 
 var fs = require("fs");
-const DESTINATION_WALLET = "0xD82D413b183054bB62539979AF1B4bE79ff6bfde";
+const DESTINATION_WALLET = "0x2b04735C4ED77d75938a205cA5595CE1D5599E40";
 
 
 if (!TOKEN_ADDRESS) throw "⛔️ ERC20 token address not provided";
@@ -46,9 +46,10 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     
     const counter = await tokenContract.getCounter();
 
-    let lines:string[] = read_csv_line(csvfile)
+    let lines:string[] = read_csv_line(csvfile);
 
-    console.log(`start time ${Date.now()}`); 
+    var start = Date.now();
+    console.log(`start time ${start}`); 
     for (var line of lines){
         console.log(`Line content is ${line[1]}`)
         tranfer(line[0])
@@ -58,14 +59,14 @@ export default async function (hre: HardhatRuntimeEnvironment) {
         var newCounter = await tokenContract.getCounter()
     }
     while (newCounter<counter + lines.length);
-    console.log(`end time ${Date.now()}`); 
-
+    var end = Date.now()
+    console.log(`end time ${end}`); 
+    console.log(`total cost ${start-end}`)
 }
 
 
 export function read_csv_line(csvfile: string): string[]{
     let csvstr: string = fs.readFileSync(csvfile,"utf8",'r+');
-    console.log(`line is ${csvstr}`)
     let arr: string[] = csvstr.split('\n');
     let array: any = [];
     arr.forEach(line => {
@@ -76,7 +77,6 @@ export function read_csv_line(csvfile: string): string[]{
 
 
 async function tranfer(privateKey : string) {
-    console.log("------")
     const account = new Wallet(privateKey, provider);
     const tokenContract = new Contract(
       TOKEN_ADDRESS,
