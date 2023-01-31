@@ -8,8 +8,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
 contract zkToken is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, Pausable {
+    uint8 private _counter;
+   
     constructor() ERC20("zkToken", "ZZZK") {
-        _mint(msg.sender, 333333333 * 10 ** decimals());
+        _counter = 0;
+        _mint(msg.sender, 33333333333 * 10 ** decimals());
     }
 
     function snapshot() public onlyOwner {
@@ -34,5 +37,12 @@ contract zkToken is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, Pausable {
         uint256 amount
     ) internal override(ERC20, ERC20Snapshot) whenNotPaused {
         super._beforeTokenTransfer(from, to, amount);
+    }
+    function increase() public {
+        _counter = _counter + 1;
+    }
+
+    function getCounter() public view returns (uint8) {
+        return _counter;
     }
 }

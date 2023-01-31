@@ -89,15 +89,14 @@ describe('Erc20', function () {
     await depositHandle.wait();
   });
 
-  it("Should return the new greeting once it's changed", async () => {
-    const greeter = await deployGreeter(deployer);
+  it("Should return erc20 address", async () => {
+    const contract = await deployToken(deployer);
     console.log('Contract deployed');
-    expect(await greeter.greet()).to.eq('Hi');
 
-    const setGreetingTx = await greeter.setGreeting('Hola, mundo!');
-    await setGreetingTx.wait();
-
-    expect(await greeter.greet()).to.equal('Hola, mundo!');
+      // Show the contract info.
+    const contractAddress = contract.address;
+    console.log(`erc20 was deployed to ${contractAddress}`);
+    
   });
 });
 

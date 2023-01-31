@@ -5,17 +5,13 @@ require('@matterlabs/hardhat-zksync-solc');
 
 // dynamically changes endpoints for local tests
 const zkSyncTestnet =
-  process.env.NODE_ENV == 'test'
-    ? {
+{
         url: 'http://localhost:3050',
         ethNetwork: 'http://localhost:8545',
         zksync: true,
+        allowUnlimitedContractSize: true,
       }
-    : {
-        url: 'https://zksync2-testnet.zksync.dev',
-        ethNetwork: 'goerli',
-        zksync: true,
-      };
+    ;
 
 const config: HardhatUserConfig = {
   zksolc: {
@@ -28,6 +24,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       // @ts-ignore
       zksync: true,
+      allowUnlimitedContractSize: true,
     },
     zkSyncTestnet,
   },

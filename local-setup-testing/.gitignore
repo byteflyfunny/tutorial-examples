@@ -3,3 +3,4 @@ artifacts-zk/
 cache/
 cache-zk/
 node_modules/
+.env
