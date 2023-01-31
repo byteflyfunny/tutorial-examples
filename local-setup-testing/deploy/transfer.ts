@@ -93,6 +93,8 @@ async function tranfer(privateKey : string) {
             //   transfer tokens
 
     for(var i = 10;i>=1;i--) {
+
+        try {
         //   transfer tokens
         const transferHandle = await tokenContract.transfer(
             DESTINATION_WALLET,
@@ -100,12 +102,22 @@ async function tranfer(privateKey : string) {
         );
         //   Wait until the transaction is processed on zkSync
         await transferHandle.wait();
-        
         console.log(`Transfer completed in trx ${transferHandle.hash}`);
+        }catch (error){
+            console.log(`try again ${account.address}`)
+            i++;
+        }
     }
-    const tx = await tokenContract.increase();
-    await tx.wait();
-    console.log(`Counter now is ${await tokenContract.getCounter()}`);
+    try {
+        const tx = await tokenContract.increase();
+        await tx.wait();
+        console.log(`Counter now is ${await tokenContract.getCounter()}`);
+    }catch(error){
+        const tx = await tokenContract.increase();
+        await tx.wait();
+        console.log(`try again Counter now is ${await tokenContract.getCounter()}`);
+    }
+
 
 }
 
