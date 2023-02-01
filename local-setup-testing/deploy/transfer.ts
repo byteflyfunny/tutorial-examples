@@ -99,9 +99,11 @@ async function tranfer(privateKey : string) {
             to: DESTINATION_WALLET,
             token: TOKEN_ADDRESS,
             amount: ethers.utils.parseEther(AMOUNT),
+          }).catch((error) => {
+            console.error(error);
+            i++;
           });
-        const transferReceipt = await transfer.wait();
-        console.log(`Transfer completed in trx ${transferReceipt.blockHash}`);
+        console.log(`Transfer completed in trx`);
 
 
         //   transfer tokens
