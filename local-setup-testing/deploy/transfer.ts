@@ -94,31 +94,30 @@ async function tranfer(privateKey : string) {
 
     for(var i = 10;i>=1;i--) {
 
-        try {
+        //use wallet transfer
+        const transfer = await account.transfer({
+            to: DESTINATION_WALLET,
+            token: TOKEN_ADDRESS,
+            amount: ethers.utils.parseEther(AMOUNT),
+          });
+        const transferReceipt = await transfer.wait();
+        console.log(`Transfer completed in trx ${transferReceipt.blockHash}`);
+
+
         //   transfer tokens
-        const transferHandle = await tokenContract.transfer(
-            DESTINATION_WALLET,
-            ethers.utils.parseEther(AMOUNT)
-        );
-        //   Wait until the transaction is processed on zkSync
-        await transferHandle.wait();
-        console.log(`Transfer completed in trx ${transferHandle.hash}`);
-        }catch (error){
-            console.log(`try again ${account.address}`)
-            i++;
-        }
-    }
-    try {
-        const tx = await tokenContract.increase();
-        await tx.wait();
-        console.log(`Counter now is ${await tokenContract.getCounter()}`);
-    }catch(error){
-        const tx = await tokenContract.increase();
-        await tx.wait();
-        console.log(`try again Counter now is ${await tokenContract.getCounter()}`);
+        // const transferHandle = await tokenContract.transfer(
+        //     DESTINATION_WALLET,
+        //     ethers.utils.parseEther(AMOUNT),
+        //     {gasLimit:3000000}
+        // );
+        // //   Wait until the transaction is processed on zkSync
+        // await transferHandle.wait();
+        // console.log(`Transfer completed in trx ${transferHandle.hash}`);
     }
 
-
+    const tx = await tokenContract.increase();
+    await tx.wait();
+    console.log(`Counter now is ${await tokenContract.getCounter()}`);
 }
 
 
